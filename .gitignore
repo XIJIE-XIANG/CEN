@@ -8,6 +8,6 @@ dist/
 examples/toy_dataset/
 examples/toy_results.csv
 cen_results.csv
-results_spike_autofocus_CEN_dt*/
+results_dt*/
 
 .DS_Store

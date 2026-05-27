@@ -49,7 +49,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--save_dir",
         default=None,
-        help="Optional output directory. Default: ./results_spike_autofocus_CEN_dt{dt}",
+        help="Optional output directory. Default: ./results_dt{dt}",
     )
     return parser.parse_args()
 
@@ -106,7 +106,7 @@ def main() -> None:
         scene_dirs = build_default_scene_list(args.base_dir)
     else:
         scene_dirs = build_scene_list_from_generated_root(generated_root)
-    save_dir = Path(args.save_dir or f"./results_spike_autofocus_CEN_dt{args.dt}")
+    save_dir = Path(args.save_dir or f"./results_dt{args.dt}")
     config = CENConfig()
 
     wide_rows: list[dict[str, object]] = []
@@ -147,10 +147,12 @@ def main() -> None:
                 f"r2={wide_row['OURS_CEN_r2_hat']:.4f}"
             )
 
-    write_csv(save_dir / "summary_wide_scene_compare.csv", wide_rows)
-    write_csv(save_dir / "summary_long_method_compare.csv", append_mean_rows_long(long_rows))
-    print(f"[save] {save_dir / 'summary_wide_scene_compare.csv'}")
-    print(f"[save] {save_dir / 'summary_long_method_compare.csv'}")
+    summary_csv = save_dir / "summary.csv"
+    methods_csv = save_dir / "methods.csv"
+    write_csv(summary_csv, wide_rows)
+    write_csv(methods_csv, append_mean_rows_long(long_rows))
+    print(f"[save] {summary_csv}")
+    print(f"[save] {methods_csv}")
     print("========== DONE ==========")
 
 

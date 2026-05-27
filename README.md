@@ -84,7 +84,7 @@ simu02 -> Im37
 simu03 -> Im13
 ```
 
-Outputs are written to `results_spike_autofocus_CEN_dt{dt}/summary_wide_scene_compare.csv` and `summary_long_method_compare.csv`. The main error column is `abs_err`, the absolute focus-distance error.
+Outputs are written to `results_dt{dt}/summary.csv` and `results_dt{dt}/methods.csv`. The main error column is `abs_err`, the absolute focus-distance error.
 
 ## Manifest Mode
 
