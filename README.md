@@ -60,7 +60,7 @@ The default public path placeholder is:
 --generated_root ./simulate_moderate_light
 ```
 
-## Compare Generated Spikes
+## Autofocus Evaluation Under Moderate Light
 
 ```bash
 python3 scripts/spike_autofocus_CEN.py \
@@ -68,7 +68,7 @@ python3 scripts/spike_autofocus_CEN.py \
   --dt 10
 ```
 
-For the low-light simulation:
+## Autofocus Evaluation Under Low Light
 
 ```bash
 python3 scripts/spike_autofocus_CEN.py \
