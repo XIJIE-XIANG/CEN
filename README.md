@@ -104,3 +104,17 @@ For each temporal block:
 4. Compute the cumulative radial energy centroid up to each candidate radius `r2`.
 5. Select `r2` without ground truth using the same curve-shape scoring as `syn_cmp_generated_spikes_keepHW.py`.
 6. Normalize the selected CEN curve and localize the focus block with top-centroid peak estimation.
+
+## Citation
+
+If you use this code or dataset, please cite our ICML 2026 paper:
+
+```bibtex
+@inproceedings{xiang2026cen,
+  title     = {CEN Autofocus for Spike Cameras via Spectral Centroid in the Frequency Domain},
+  author    = {Xiang, Xijie and Zhu, Lin and Tian, Yonghong},
+  booktitle = {Proceedings of the 43rd International Conference on Machine Learning},
+  year      = {2026},
+  keywords  = {Spike camera, Neuromorphic vision, Autofocus, Spectral centroid, Frequency-domain}
+}
+```
