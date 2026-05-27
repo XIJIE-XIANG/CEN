@@ -1,8 +1,8 @@
-# CEN Autofocus
+# Spike Autofocus (CEN)
 
 This repository provides the official code for our ICML 2026 paper, "Autofocus for Spike Cameras via Spectral Centroid in the Frequency Domain".
 
-The code runs CEN-based autofocus on generated spike-camera simulation datasets and reports focus-distance errors for moderate-light and low-light settings.
+The code runs spike autofocus on generated simulation datasets and reports focus-distance errors for moderate-light and low-light settings.
 
 ## Install
 
