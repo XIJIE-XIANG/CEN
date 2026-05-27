@@ -111,10 +111,9 @@ If you use this code or dataset, please cite our ICML 2026 paper:
 
 ```bibtex
 @inproceedings{xiang2026cen,
-  title     = {CEN Autofocus for Spike Cameras via Spectral Centroid in the Frequency Domain},
+  title     = {Autofocus for Spike Cameras via Spectral Centroid in the Frequency Domain},
   author    = {Xiang, Xijie and Zhu, Lin and Tian, Yonghong},
   booktitle = {Proceedings of the 43rd International Conference on Machine Learning},
-  year      = {2026},
-  keywords  = {Spike camera, Neuromorphic vision, Autofocus, Spectral centroid, Frequency-domain}
+  year      = {2026}
 }
 ```
