@@ -42,7 +42,7 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--generated_root",
-        default="./simulations01/simulate_moderate_light",
+        default="./simulate_moderate_light",
         help="Root directory of generated spikes.",
     )
     parser.add_argument("--dt", type=int, default=10, help="Spike frames accumulated into one block.")

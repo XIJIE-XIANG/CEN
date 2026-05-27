@@ -18,37 +18,36 @@ Download the public generated-spike dataset from Google Drive:
 https://drive.google.com/file/d/1a0eDgwk-6tjjZQCigShkX_S3cgHybZHT/view?usp=drive_link
 ```
 
-After downloading, extract it so the repository can see one of these directories:
+The downloaded file is `simulate dataset.zip`. After extraction, it contains two dataset directories:
 
 ```text
-simulations01/simulate_moderate_light
-simulations01/simulate_low_light
+simulate_moderate_light/
+simulate_low_light/
 ```
 
-You can also place the dataset elsewhere and pass the full path with `--generated_root`.
+Place either directory at the repository root, or pass its full path with `--generated_root`.
 
 ## Generated Simulation Layout
 
 The comparison script expects generated spikes in this layout:
 
 ```text
-simulations01/
-  simulate_moderate_light/
-    dataset_manifest.json
-    simu01/focus_distances.csv
-    simu01/focus_distances.json
-    simu01/spikes_npy/Im1_spikes.npy
-    simu01/spikes_npy/Im2_spikes.npy
-    ...
-    simu02/spikes_npy/Im1_spikes.npy
-    ...
-    simu03/spikes_npy/Im1_spikes.npy
-    ...
-  simulate_low_light/
-    dataset_manifest.json
-    simu01/focus_distances.csv
-    simu01/spikes_npy/Im1_spikes.npy
-    ...
+simulate_moderate_light/
+  dataset_manifest.json
+  simu01/focus_distances.csv
+  simu01/focus_distances.json
+  simu01/spikes_npy/Im1_spikes.npy
+  simu01/spikes_npy/Im2_spikes.npy
+  ...
+  simu02/spikes_npy/Im1_spikes.npy
+  ...
+  simu03/spikes_npy/Im1_spikes.npy
+  ...
+simulate_low_light/
+  dataset_manifest.json
+  simu01/focus_distances.csv
+  simu01/spikes_npy/Im1_spikes.npy
+  ...
 ```
 
 Each `Im*_spikes.npy` file is a `[T, H, W]` array. Values are binarized with `>0` before block accumulation, matching the experiment script.
@@ -58,14 +57,14 @@ Each scene also contains `focus_distances.csv`, exported from the original `data
 The default public path placeholder is:
 
 ```text
---generated_root ./simulations01/simulate_moderate_light
+--generated_root ./simulate_moderate_light
 ```
 
 ## Compare Generated Spikes
 
 ```bash
 python3 scripts/spike_autofocus_CEN.py \
-  --generated_root ./simulations01/simulate_moderate_light \
+  --generated_root ./simulate_moderate_light \
   --dt 10
 ```
 
@@ -73,7 +72,7 @@ For the low-light simulation:
 
 ```bash
 python3 scripts/spike_autofocus_CEN.py \
-  --generated_root ./simulations01/simulate_low_light \
+  --generated_root ./simulate_low_light \
   --dt 10
 ```
 
