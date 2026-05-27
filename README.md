@@ -10,6 +10,23 @@ The repository contains only the code needed to run the algorithm on generated s
 python3 -m pip install -e .
 ```
 
+## Dataset
+
+Download the public generated-spike dataset from Google Drive:
+
+```text
+https://drive.google.com/file/d/1a0eDgwk-6tjjZQCigShkX_S3cgHybZHT/view?usp=drive_link
+```
+
+After downloading, extract it so the repository can see one of these directories:
+
+```text
+simulations01/simulate_moderate_light
+simulations01/simulate_low_light
+```
+
+You can also place the dataset elsewhere and pass the full path with `--generated_root`.
+
 ## Generated Simulation Layout
 
 The comparison script expects generated spikes in this layout:

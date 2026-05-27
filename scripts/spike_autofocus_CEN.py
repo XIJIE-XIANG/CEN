@@ -6,6 +6,8 @@ import csv
 import sys
 from pathlib import Path
 
+DATASET_URL = "https://drive.google.com/file/d/1a0eDgwk-6tjjZQCigShkX_S3cgHybZHT/view?usp=drive_link"
+
 try:
     from autofocus_cen import CENConfig
     from autofocus_cen.generated import (
@@ -90,12 +92,20 @@ def main() -> None:
     if args.dt <= 0:
         raise ValueError("dt must be positive")
 
+    generated_root = Path(args.generated_root)
+    if not generated_root.exists():
+        raise FileNotFoundError(
+            f"generated_root not found: {generated_root}\n"
+            f"Download the public dataset from {DATASET_URL} and pass the extracted "
+            "simulate_moderate_light or simulate_low_light directory via --generated_root."
+        )
+
     if args.scene_dirs:
         scene_dirs = [Path(p) for p in args.scene_dirs]
     elif args.base_dir:
         scene_dirs = build_default_scene_list(args.base_dir)
     else:
-        scene_dirs = build_scene_list_from_generated_root(args.generated_root)
+        scene_dirs = build_scene_list_from_generated_root(generated_root)
     save_dir = Path(args.save_dir or f"./results_spike_autofocus_CEN_dt{args.dt}")
     config = CENConfig()
 
