@@ -67,26 +67,6 @@ def write_csv(path: Path, rows: list[dict[str, object]]) -> None:
         writer.writerows(rows)
 
 
-def append_mean_rows_by_method(rows: list[dict[str, object]]) -> list[dict[str, object]]:
-    methods = []
-    for row in rows:
-        method = row.get("method")
-        if method not in methods:
-            methods.append(method)
-
-    out = list(rows)
-    numeric_cols = ["abs_err", "image_abs_err"]
-    for method in methods:
-        sub = [row for row in rows if row.get("method") == method]
-        mean_row = {"scene": "MEAN", "method": method}
-        for col in numeric_cols:
-            values = [float(row[col]) for row in sub if col in row]
-            if values:
-                mean_row[col] = sum(values) / len(values)
-        out.append(mean_row)
-    return out
-
-
 def main() -> None:
     args = parse_args()
     if args.dt <= 0:
@@ -109,8 +89,7 @@ def main() -> None:
     save_dir = Path(args.save_dir or f"./results_dt{args.dt}")
     config = CENConfig()
 
-    scene_rows: list[dict[str, object]] = []
-    method_rows: list[dict[str, object]] = []
+    result_rows: list[dict[str, object]] = []
 
     print("========== COMPARE SPIKE-DOMAIN METHODS ON GENERATED SPIKES ==========")
     print(f"generated_root = {args.generated_root}")
@@ -124,7 +103,7 @@ def main() -> None:
             continue
 
         try:
-            scene_row, scene_method_rows = compare_one_scene(
+            rows_for_scene = compare_one_scene(
                 scene_dir=scene_dir,
                 generated_root=args.generated_root,
                 dt=args.dt,
@@ -133,26 +112,22 @@ def main() -> None:
             )
         except Exception as exc:
             print(f"[ERROR] scene={scene_name}, dt={args.dt}, error={exc}")
-            scene_row = {"scene": scene_name, "dt": args.dt, "error": str(exc)}
-            scene_method_rows = [{"scene": scene_name, "dt": args.dt, "method": "ERROR", "error": str(exc)}]
+            rows_for_scene = [{"scene": scene_name, "dt": args.dt, "method": "ERROR", "error": str(exc)}]
 
-        scene_rows.append(scene_row)
-        method_rows.extend(scene_method_rows)
-        if "OURS_CEN_pred_block" in scene_row:
+        result_rows.extend(rows_for_scene)
+        ours_row = next((row for row in rows_for_scene if row.get("method") == "OURS_CEN"), None)
+        if ours_row is not None:
             print(
-                f"{scene_name}: OURS_CEN pred_block={scene_row['OURS_CEN_pred_block']} "
-                f"pred_focus={scene_row['OURS_CEN_pred_focus']:.8f} "
-                f"gt_focus={scene_row['gt_focus']:.8f} "
-                f"abs_err={scene_row['OURS_CEN_abs_err']:.8f} "
-                f"r2={scene_row['OURS_CEN_r2_hat']:.4f}"
+                f"{scene_name}: OURS_CEN pred_block={ours_row['pred_block']} "
+                f"pred_focus={ours_row['pred_focus']:.8f} "
+                f"gt_focus={ours_row['gt_focus']:.8f} "
+                f"abs_err={ours_row['abs_err']:.8f} "
+                f"r2={ours_row['r2_hat']:.4f}"
             )
 
-    scene_results_csv = save_dir / "scene_results.csv"
-    method_results_csv = save_dir / "method_results.csv"
-    write_csv(scene_results_csv, scene_rows)
-    write_csv(method_results_csv, append_mean_rows_by_method(method_rows))
-    print(f"[save] {scene_results_csv}")
-    print(f"[save] {method_results_csv}")
+    results_csv = save_dir / "results.csv"
+    write_csv(results_csv, result_rows)
+    print(f"[save] {results_csv}")
     print("========== DONE ==========")
 
 

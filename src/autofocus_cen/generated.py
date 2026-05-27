@@ -224,7 +224,7 @@ def compare_one_scene(
     dt: int,
     gt_image_name: str,
     config: CENConfig = CENConfig(),
-) -> tuple[dict[str, object], list[dict[str, object]]]:
+) -> list[dict[str, object]]:
     scene_dir = Path(scene_dir)
     scene_name = scene_dir.resolve().name
     npy_files, spikes_dir = find_generated_spike_files(scene_dir, generated_root)
@@ -242,7 +242,7 @@ def compare_one_scene(
     gt_focus = float(focus_distances[gt_image_idx])
 
     cen_result = estimate_focus_from_npy_files(npy_files, dt=dt, config=config)
-    block_ids, base_curves = run_baselines_stream(npy_files, dt=dt)
+    _block_ids, base_curves = run_baselines_stream(npy_files, dt=dt)
 
     methods = {
         "OURS_CEN": (int(cen_result.focus_block), cen_result.normalized_curve),
@@ -250,21 +250,6 @@ def compare_one_scene(
     for name, curve in base_curves.items():
         methods[name] = pred_by_peak(curve, edge_frac=config.edge_ratio, tau=0.012)
 
-    scene_row: dict[str, object] = {
-        "scene": scene_name,
-        "dt": dt,
-        "spikes_dir": str(spikes_dir),
-        "focus_distances": str(focus_path),
-        "num_input_images": num_input_images,
-        "gt_image": gt_image_name,
-        "gt_image_idx_0based": gt_image_idx,
-        "gt_block_center": gt_block_center,
-        "gt_focus": gt_focus,
-        "spikes_per_image": spikes_per_image,
-        "num_blocks": int(block_ids.size),
-        "OURS_CEN_r2_hat": float(cen_result.r2),
-        "OURS_CEN_score": float(cen_result.r2_score_detail.get("score", np.nan)),
-    }
     method_rows: list[dict[str, object]] = []
 
     for method_name, (pred_block, y_norm) in methods.items():
@@ -299,10 +284,4 @@ def compare_one_scene(
             method_row.update(cen_result.r2_score_detail)
         method_rows.append(method_row)
 
-        scene_row[f"{method_name}_pred_block"] = int(pred_block)
-        scene_row[f"{method_name}_pred_image"] = pred_img_name
-        scene_row[f"{method_name}_image_abs_err"] = image_abs_err
-        scene_row[f"{method_name}_pred_focus"] = pred_focus
-        scene_row[f"{method_name}_abs_err"] = abs_err
-
-    return scene_row, method_rows
+    return method_rows

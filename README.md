@@ -84,7 +84,7 @@ simu02 -> Im37
 simu03 -> Im13
 ```
 
-Outputs are written to `results_dt{dt}/scene_results.csv` and `results_dt{dt}/method_results.csv`. `scene_results.csv` stores one row per scene, with each method as a group of columns. `method_results.csv` stores one row per scene-method pair, which is convenient for averaging or plotting. The main error column is `abs_err`, the absolute focus-distance error.
+Outputs are written to `results_dt{dt}/results.csv`. Each row stores one scene-method result. The main error column is `abs_err`, the absolute focus-distance error.
 
 ## Manifest Mode
 
