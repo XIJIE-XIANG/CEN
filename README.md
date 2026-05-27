@@ -1,8 +1,8 @@
 # CEN Autofocus
 
-This is the minimal public implementation of the CEN autofocus algorithm used in our spike-camera experiments.
+This repository provides the official code for our ICML 2026 paper, "Autofocus for Spike Cameras via Spectral Centroid in the Frequency Domain".
 
-The repository contains only the code needed to run the algorithm on generated simulated spike datasets. It does not include private datasets, cached experiment outputs, paper figures, local absolute paths, or the spike simulator.
+The code runs CEN-based autofocus on generated spike-camera simulation datasets and reports focus-distance errors for moderate-light and low-light settings.
 
 ## Install
 
