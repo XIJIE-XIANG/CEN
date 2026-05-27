@@ -250,7 +250,7 @@ def compare_one_scene(
     for name, curve in base_curves.items():
         methods[name] = pred_by_peak(curve, edge_frac=config.edge_ratio, tau=0.012)
 
-    wide_row: dict[str, object] = {
+    scene_row: dict[str, object] = {
         "scene": scene_name,
         "dt": dt,
         "spikes_dir": str(spikes_dir),
@@ -265,7 +265,7 @@ def compare_one_scene(
         "OURS_CEN_r2_hat": float(cen_result.r2),
         "OURS_CEN_score": float(cen_result.r2_score_detail.get("score", np.nan)),
     }
-    long_rows: list[dict[str, object]] = []
+    method_rows: list[dict[str, object]] = []
 
     for method_name, (pred_block, y_norm) in methods.items():
         y_norm = np.asarray(y_norm, dtype=np.float64)
@@ -279,7 +279,7 @@ def compare_one_scene(
         focus_signed_err = float(pred_focus - gt_focus)
         abs_err = float(abs(focus_signed_err))
 
-        long_row = {
+        method_row = {
             "scene": scene_name,
             "dt": dt,
             "method": method_name,
@@ -295,14 +295,14 @@ def compare_one_scene(
             "abs_err": abs_err,
         }
         if method_name == "OURS_CEN":
-            long_row["r2_hat"] = float(cen_result.r2)
-            long_row.update(cen_result.r2_score_detail)
-        long_rows.append(long_row)
+            method_row["r2_hat"] = float(cen_result.r2)
+            method_row.update(cen_result.r2_score_detail)
+        method_rows.append(method_row)
 
-        wide_row[f"{method_name}_pred_block"] = int(pred_block)
-        wide_row[f"{method_name}_pred_image"] = pred_img_name
-        wide_row[f"{method_name}_image_abs_err"] = image_abs_err
-        wide_row[f"{method_name}_pred_focus"] = pred_focus
-        wide_row[f"{method_name}_abs_err"] = abs_err
+        scene_row[f"{method_name}_pred_block"] = int(pred_block)
+        scene_row[f"{method_name}_pred_image"] = pred_img_name
+        scene_row[f"{method_name}_image_abs_err"] = image_abs_err
+        scene_row[f"{method_name}_pred_focus"] = pred_focus
+        scene_row[f"{method_name}_abs_err"] = abs_err
 
-    return wide_row, long_rows
+    return scene_row, method_rows

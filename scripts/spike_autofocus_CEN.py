@@ -67,7 +67,7 @@ def write_csv(path: Path, rows: list[dict[str, object]]) -> None:
         writer.writerows(rows)
 
 
-def append_mean_rows_long(rows: list[dict[str, object]]) -> list[dict[str, object]]:
+def append_mean_rows_by_method(rows: list[dict[str, object]]) -> list[dict[str, object]]:
     methods = []
     for row in rows:
         method = row.get("method")
@@ -109,8 +109,8 @@ def main() -> None:
     save_dir = Path(args.save_dir or f"./results_dt{args.dt}")
     config = CENConfig()
 
-    wide_rows: list[dict[str, object]] = []
-    long_rows: list[dict[str, object]] = []
+    scene_rows: list[dict[str, object]] = []
+    method_rows: list[dict[str, object]] = []
 
     print("========== COMPARE SPIKE-DOMAIN METHODS ON GENERATED SPIKES ==========")
     print(f"generated_root = {args.generated_root}")
@@ -124,7 +124,7 @@ def main() -> None:
             continue
 
         try:
-            wide_row, scene_long_rows = compare_one_scene(
+            scene_row, scene_method_rows = compare_one_scene(
                 scene_dir=scene_dir,
                 generated_root=args.generated_root,
                 dt=args.dt,
@@ -133,26 +133,26 @@ def main() -> None:
             )
         except Exception as exc:
             print(f"[ERROR] scene={scene_name}, dt={args.dt}, error={exc}")
-            wide_row = {"scene": scene_name, "dt": args.dt, "error": str(exc)}
-            scene_long_rows = [{"scene": scene_name, "dt": args.dt, "method": "ERROR", "error": str(exc)}]
+            scene_row = {"scene": scene_name, "dt": args.dt, "error": str(exc)}
+            scene_method_rows = [{"scene": scene_name, "dt": args.dt, "method": "ERROR", "error": str(exc)}]
 
-        wide_rows.append(wide_row)
-        long_rows.extend(scene_long_rows)
-        if "OURS_CEN_pred_block" in wide_row:
+        scene_rows.append(scene_row)
+        method_rows.extend(scene_method_rows)
+        if "OURS_CEN_pred_block" in scene_row:
             print(
-                f"{scene_name}: OURS_CEN pred_block={wide_row['OURS_CEN_pred_block']} "
-                f"pred_focus={wide_row['OURS_CEN_pred_focus']:.8f} "
-                f"gt_focus={wide_row['gt_focus']:.8f} "
-                f"abs_err={wide_row['OURS_CEN_abs_err']:.8f} "
-                f"r2={wide_row['OURS_CEN_r2_hat']:.4f}"
+                f"{scene_name}: OURS_CEN pred_block={scene_row['OURS_CEN_pred_block']} "
+                f"pred_focus={scene_row['OURS_CEN_pred_focus']:.8f} "
+                f"gt_focus={scene_row['gt_focus']:.8f} "
+                f"abs_err={scene_row['OURS_CEN_abs_err']:.8f} "
+                f"r2={scene_row['OURS_CEN_r2_hat']:.4f}"
             )
 
-    summary_csv = save_dir / "summary.csv"
-    methods_csv = save_dir / "methods.csv"
-    write_csv(summary_csv, wide_rows)
-    write_csv(methods_csv, append_mean_rows_long(long_rows))
-    print(f"[save] {summary_csv}")
-    print(f"[save] {methods_csv}")
+    scene_results_csv = save_dir / "scene_results.csv"
+    method_results_csv = save_dir / "method_results.csv"
+    write_csv(scene_results_csv, scene_rows)
+    write_csv(method_results_csv, append_mean_rows_by_method(method_rows))
+    print(f"[save] {scene_results_csv}")
+    print(f"[save] {method_results_csv}")
     print("========== DONE ==========")
 
 
