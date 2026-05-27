@@ -113,7 +113,7 @@ If you use this code or dataset, please cite our ICML 2026 paper:
 @inproceedings{xiang2026cen,
   title     = {Autofocus for Spike Cameras via Spectral Centroid in the Frequency Domain},
   author    = {Xiang, Xijie and Zhu, Lin and Tian, Yonghong},
-  booktitle = {Proceedings of the 43rd International Conference on Machine Learning},
+  booktitle = {Proceedings of the 43rd International Conference on Machine Learning (ICML)},
   year      = {2026}
 }
 ```
