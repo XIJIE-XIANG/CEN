@@ -18,7 +18,7 @@ Download the public generated-spike dataset from Google Drive:
 https://drive.google.com/file/d/1a0eDgwk-6tjjZQCigShkX_S3cgHybZHT/view?usp=drive_link
 ```
 
-The downloaded file is `simulate dataset.zip`. After extraction, it contains two dataset directories:
+The downloaded file is `simulate_dataset.zip`. After extraction, it contains two dataset directories:
 
 ```text
 simulate_moderate_light/
