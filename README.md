@@ -12,7 +12,7 @@ python3 -m pip install -e .
 
 ## Dataset
 
-Download the public generated-spike dataset from Google Drive:
+Download the simulation dataset used in the paper from Google Drive:
 
 ```text
 https://drive.google.com/file/d/1a0eDgwk-6tjjZQCigShkX_S3cgHybZHT/view?usp=drive_link
